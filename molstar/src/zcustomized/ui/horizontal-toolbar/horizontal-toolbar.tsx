@@ -15,7 +15,7 @@ export class HorizontalToolbar extends React.Component<HorizontalToolbarProps, H
       nonCovalentBonds: [
         {
           prop: 'hydrogenBonds',
-          isChecked: false,
+          isChecked: true,
         },
         {
           prop: 'weakHBonds',
@@ -23,20 +23,20 @@ export class HorizontalToolbar extends React.Component<HorizontalToolbarProps, H
         },
         {
           prop: 'halogenBonds',
-          isChecked: false,
+          isChecked: true,
         },
       ],
       piInteractions: [
         {
           prop: 'piPiStakcing',
-          isChecked: false,
+          isChecked: true,
         },
         {
           prop: 'piCations',
-          isChecked: false,
+          isChecked: true,
         },
       ],
-      selectedObjectOfInteractionProp: 'all',
+      selectedObjectOfInteractionProp: 'ligandReceptor',
     }
   }
 
