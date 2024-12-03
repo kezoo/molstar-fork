@@ -1,71 +1,18 @@
 import React from 'react'
 import {Checkbox, Radio} from 'antd'
+import { InteractionOptionsData } from './interface'
 
 export class InteractionOptions extends React.Component<InteractionOptionsState, InteractionOptionsProps> {
 
   constructor (props: InteractionOptionsProps) {
     super(props)
 
-    const nonCovalentBonds: CheckboxItem[] = [
-      {
-        prop: 'hydrogenBonds',
-        label: 'Hydrogen Bonds',
-        isChecked: false,
-        bindingColor: {
-          color: '#3B7BAC',
-        },
-      },
-      {
-        prop: 'weakHBonds',
-        label: 'Weak H-Bonds',
-        isChecked: false,
-        bindingColor: {
-          color: '#A4B7C2',
-        },
-      },
-      {
-        prop: 'halogenBonds',
-        label: 'Halogen Bonds',
-        isChecked: false,
-        bindingColor: {
-          color: '#3B7BAC',
-        },
-      },
-    ].map(item => {
-      const findItem = props.nonCovalentBonds.find(fItem => fItem.prop === item.prop)
-      findItem && Object.assign(item, findItem)
-      return item
-    })
-    const piInteractions: CheckboxItem[] = [
-      {
-        prop: 'piPiStakcing',
-        label: 'Pi-Pi Stacking',
-        isChecked: false,
-        bindingColor: {
-          color: '#799858',
-        },
-      },
-      {
-        prop: 'piCations',
-        label: 'Pi-Cations',
-        isChecked: false,
-        bindingColor: {
-          color: '#AA5B13',
-        },
-      },
-    ].map(item => {
-      const findItem = props.piInteractions.find(fItem => fItem.prop === item.prop)
-      findItem && Object.assign(item, findItem)
-      return item
-    })
     this.state = {
-      nonCovalentBonds,
-      piInteractions,
+      nonCovalentBonds: [...props.nonCovalentBonds],
+      piInteractions: [...props.piInteractions],
       selectedObjectOfInteractionProp: props.selectedObjectOfInteractionProp
     }
   }
-
-  
 
   renderSubTitle ({
     title,
@@ -223,14 +170,10 @@ export class InteractionOptions extends React.Component<InteractionOptionsState,
   }
 }
 
-interface InteractionOptionsState extends InteractionOptionsProps {
+interface InteractionOptionsState extends InteractionOptionsData {
   
 }
-interface InteractionOptionsBasicProps {
-  nonCovalentBonds: CheckboxItem[],
-  piInteractions: CheckboxItem[],
-  selectedObjectOfInteractionProp: string,
-}
-interface InteractionOptionsProps extends InteractionOptionsBasicProps {
+
+interface InteractionOptionsProps extends InteractionOptionsData {
 }
 type InteractionOptionsStateKeys = keyof InteractionOptionsState

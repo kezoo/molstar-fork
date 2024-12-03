@@ -326,6 +326,7 @@ export class CustomStructureControls extends PluginUIComponent<{ initiallyCollap
 }
 
 export class DefaultStructureTools extends PluginUIComponent {
+    
     render() {
         return <>
             <div className='msp-section-header'><Icon svg={BuildSvg} />Structure Tools</div>

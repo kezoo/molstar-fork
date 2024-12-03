@@ -1,114 +1,59 @@
-import React, { createRef } from 'react'
-import { Button, Popconfirm, PopconfirmProps } from 'antd'
-import { AiOutlineInteraction } from "react-icons/ai";
-import { FaCaretDown } from "react-icons/fa";
+import React from 'react'
+import { Popconfirm } from 'antd'
 import { HorizontalToolbarStyles } from './horizontal-toolbar-style';
 import { InteractionOptions } from './InteractionOptions';
+import { PluginUIComponent } from '../../../mol-plugin-ui/base';
+import { HorizontalToolbarProps, HorizontalToolbarState, ToolbarButtonProps } from './interface';
+import { getInteractionBtnConfig } from './InteractonButton';
+import { StructureComponentManager } from '../../../mol-plugin-state/manager/structure/component';
 
-export class HorizontalToolbar extends React.Component<HorizontalToolbarProps, HorizontalToolbarState> {
+export class HorizontalToolbar<P = {}, S = {}, SS = {}> extends PluginUIComponent<P & HorizontalToolbarProps, S & HorizontalToolbarState, SS>  {
 
   interactionOptionsRef?: InteractionOptions | null
-  constructor(props: HorizontalToolbarProps) {
-    super(props)
-
-    this.state = {
-      nonCovalentBonds: [
-        {
-          prop: 'hydrogenBonds',
-          isChecked: true,
-        },
-        {
-          prop: 'weakHBonds',
-          isChecked: false,
-        },
-        {
-          prop: 'halogenBonds',
-          isChecked: true,
-        },
-      ],
-      piInteractions: [
-        {
-          prop: 'piPiStakcing',
-          isChecked: true,
-        },
-        {
-          prop: 'piCations',
-          isChecked: true,
-        },
-      ],
-      selectedObjectOfInteractionProp: 'ligandReceptor',
-    }
-  }
-
-  getState () {
-    const refState = this.interactionOptionsRef?.state
-
-    if (refState) {
-
-      const nonCovalentBonds = refState.nonCovalentBonds.map(item => ({
-        prop: item.prop,
-        isChecked: item.isChecked,
-      }))
-      const piInteractions = refState.piInteractions.map(item => ({
-        prop: item.prop,
-        isChecked: item.isChecked,
-      }))
-      this.setState({
-        nonCovalentBonds: [...nonCovalentBonds],
-        piInteractions: [...piInteractions],
-        selectedObjectOfInteractionProp: refState.selectedObjectOfInteractionProp,
-      })
-    }
-  }
-
-  buttons() {
-    const styles = HorizontalToolbarStyles()
-    const thisComp = this
-    const onConfirmInteraction = () => {
-      this.getState()
-    }
-    const buttons: ToolbarButtonProps[] = [
-      {
-        prop: 'interaction',
-        label: 'Interaction',
-        confirmablePopup: {
-          title () {
-            return (
-              <div>3D Interaction</div>
-            )
-          },
-          okText: 'Confirm',
-          icon: null,
-          onConfirm: onConfirmInteraction,
-          description () {
-            return (
-              <InteractionOptions 
-                nonCovalentBonds={thisComp.state.nonCovalentBonds}
-                piInteractions={thisComp.state.piInteractions}
-                selectedObjectOfInteractionProp={thisComp.state.selectedObjectOfInteractionProp}
-                ref={(ref) => {
-                  thisComp.interactionOptionsRef = ref
-                  console.log(`interactionOptionsRef ????????? `, thisComp.interactionOptionsRef)
-                }}
-              />
-            )
+  state: S & HorizontalToolbarState  
+  buttons: ToolbarButtonProps[] 
+  constructor(props: P & HorizontalToolbarProps, context?: any) {
+    super(props, context)
+    
+    const interactionBtn = getInteractionBtnConfig({
+      onConfirm: () => {
+        const options = this.plugin.managers.structure.component.state.options
+        const interactions = options.interactions
+        const nKeys = Object.keys(interactions.providers)
+        const arrValues = [...(interactionBtn.interactionValues?.nonCovalentBonds || []), ...(interactionBtn.interactionValues?.piInteractions || [])]
+        for (const key of nKeys) {
+          const findItem = arrValues.find(fItem => fItem.apiName ===  key)
+          if (findItem) {
+            interactions.providers[key as 'ionic'].name = findItem.isChecked ? 'on' : 'off'
           }
-        },
-        icon() {
-          return (
-            <>
-              <AiOutlineInteraction />
-              <FaCaretDown />
-            </>
-          )
         }
+        options.interactions = interactions
+        this.plugin.managers.structure.component.setOptions(options)
       }
+    })
+    this.buttons = [
+      interactionBtn.config,
     ]
+  }
+
+  handleObjectOfInteraction () {
+    /* const sequence = getSequence(this.plugin);
+    let union;
+    sequence.forEach((item) =>
+      console.log(`seq item `, item)
+      item.residue.forEach((residue) => {
+        console.log(`residue `, residue)
+      })
+    }) */
+  }
+
+  renderButtons() {
+    const styles = HorizontalToolbarStyles()
     return (
       <div className={`${styles.HorizontalToolbarButtons.name}`} style={styles.HorizontalToolbarButtons.css}>
         <div className={`${styles.HorizontalToolbarButtonsWp.name}`} style={styles.HorizontalToolbarButtonsWp.css}>
           {
-            buttons.map((btn, btnkey) => {
+            this.buttons.map((btn, btnkey) => {
               const renderBtn = () => {
                 return (
                   <div
@@ -129,7 +74,7 @@ export class HorizontalToolbar extends React.Component<HorizontalToolbarProps, H
                 )
               }
               if (btn.confirmablePopup) return (
-                <Popconfirm {...btn.confirmablePopup} >
+                <Popconfirm {...btn.confirmablePopup} key={btnkey} >
                   {renderBtn()}
                 </Popconfirm>
               )
@@ -152,24 +97,9 @@ export class HorizontalToolbar extends React.Component<HorizontalToolbarProps, H
           className={`${styles.HorizontalToolbarWrapper.name}`}
           style={styles.HorizontalToolbarWrapper.css}
         >
-          {this.buttons()}
+          {this.renderButtons()}
         </div>
       </div>
     )
   }
-}
-
-interface HorizontalToolbarState {
-  nonCovalentBonds: CheckboxItem[],
-  piInteractions: CheckboxItem[],
-  selectedObjectOfInteractionProp: string,
-}
-interface HorizontalToolbarProps {
-
-}
-interface ToolbarButtonProps {
-  prop: string
-  label?: string
-  confirmablePopup?: PopconfirmProps
-  icon?: () => JSX.Element
 }

@@ -133,11 +133,12 @@ const MolstarViewer = (props: MolstarViewerProps) => {
     <div
       ref={parentRef}
       style={{position: "relative", width, height}}
-      className={className || ""}
+      className={className || "ContainerClassname"}
     >
       <canvas
         ref={canvasRef}
         style={{position: "absolute", top: 0, left: 0, right: 0, bottom: 0}}
+        data-canvas='canvas-3d'
       />
     </div>
   );

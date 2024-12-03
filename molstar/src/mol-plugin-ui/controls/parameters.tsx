@@ -45,6 +45,7 @@ export class ParameterControls<P extends PD.Params> extends React.PureComponent<
         this.props.onChange?.(params, this.props.values);
         if (this.props.onChangeValues) {
             const values = { ...this.props.values, [params.name]: params.value };
+            console.log(`on update value---------- `, params, ` AND `, this.props.values, `\nVALUES `, values)
             this.props.onChangeValues(values, this.props.values);
         }
     };
@@ -87,7 +88,8 @@ export class ParameterControls<P extends PD.Params> extends React.PureComponent<
 
     render() {
         const groups = this.paramGroups(this.props.params);
-
+        // console.log(`params `, this.props.params, )
+        // console.log(`groups `, groups)
         const essentials = this.renderPart(groups.essentials);
         const advanced = this.renderPart(groups.advanced);
 

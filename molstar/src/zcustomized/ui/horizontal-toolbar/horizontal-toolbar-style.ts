@@ -15,8 +15,7 @@ export function HorizontalToolbarStyles () {
       css: {
         width: '100%',
         margin: '14px 3%',
-        backgroundColor: '#ededed',
-        opacity: '.7',
+        backgroundColor: 'rgba(237, 237, 237, .7)',
         padding: '0.6rem',
         borderRadius: '4px',
       }

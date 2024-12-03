@@ -91,6 +91,7 @@ export function getSequenceWrapper(state: { structure: Structure, modelEntityId:
         }
 
         sw.markResidue(structureSelection.getLoci(structure), MarkerAction.Select);
+        console.log(`sw `, sw, units)
         return sw;
     } else {
         return 'No sequence available';

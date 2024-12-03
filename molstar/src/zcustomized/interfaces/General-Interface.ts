@@ -1,5 +1,6 @@
 interface CheckboxItem {
   prop: string,
+  apiName?: string
   isChecked: boolean,
   label?: string,
   bindingColor?: {
