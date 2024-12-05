@@ -35,6 +35,7 @@ namespace ApplyActionControl {
 
 class ApplyActionControl extends TransformControlBase<ApplyActionControl.Props, ApplyActionControl.ComponentState> {
     applyAction() {
+        console.log(this.props, '?????????????', this.state)
         return PluginCommands.State.ApplyAction(this.plugin, {
             state: this.props.state,
             action: this.props.action.create(this.state.params),

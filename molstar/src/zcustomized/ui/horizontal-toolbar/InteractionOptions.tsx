@@ -1,6 +1,6 @@
 import React from 'react'
 import {Checkbox, Radio} from 'antd'
-import { InteractionOptionsData } from './interface'
+import { InteractionOptionsData, ObjectOfInteractionType } from './interface'
 
 export class InteractionOptions extends React.Component<InteractionOptionsState, InteractionOptionsProps> {
 
@@ -105,7 +105,7 @@ export class InteractionOptions extends React.Component<InteractionOptionsState,
         label: 'Ligand-Receptor'
       },
       {
-        prop: 'intraligand',
+        prop: 'intraLigand',
         label: 'Intra-Ligand'
       },
       {
@@ -114,7 +114,7 @@ export class InteractionOptions extends React.Component<InteractionOptionsState,
       },
     ]
     const onRadioClick = (item: RadioboxItem) => {
-      this.setState({selectedObjectOfInteractionProp: item.prop})
+      this.setState({selectedObjectOfInteractionProp: item.prop as ObjectOfInteractionType})
     }
     return (
       <div className='flex-any'

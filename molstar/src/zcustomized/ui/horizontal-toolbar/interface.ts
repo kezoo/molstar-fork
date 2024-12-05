@@ -22,5 +22,6 @@ export type GetToolbarButtonProps = (p?: ParamsForGetToolbarButtonProps) => {
 export interface InteractionOptionsData {
   nonCovalentBonds: CheckboxItem[],
   piInteractions: CheckboxItem[],
-  selectedObjectOfInteractionProp: string,
+  selectedObjectOfInteractionProp: ObjectOfInteractionType,
 }
+export type ObjectOfInteractionType = 'all' | 'ligandReceptor' | 'intraLigand' | 'intraReceptor'

@@ -74,7 +74,7 @@ export const getInteractionBtnConfig: GetToolbarButtonProps = (params) => {
           Object.assign(interactionValues, {
             nonCovalentBonds: refState.nonCovalentBonds, 
             piInteractions: refState.piInteractions, 
-            selectedObjectOfInteractionProp: interactionValues.selectedObjectOfInteractionProp,
+            selectedObjectOfInteractionProp: refState.selectedObjectOfInteractionProp,
           })
 
           params?.onConfirm && params.onConfirm()
